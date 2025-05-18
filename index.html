@@ -4,6 +4,16 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ReadySetStores Guide</title>
+  <meta name="description" content="Step-by-step guide to launching and managing your ReadySetStores online store."/>
+  <link rel="icon" href="/images/logo.png" type="image/png"/>
+  <meta property="og:title" content="ReadySetStores Guide"/>
+  <meta property="og:description" content="Step-by-step guide to launching and managing your ReadySetStores online store."/>
+  <meta property="og:image" content="/images/logo.png"/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="ReadySetStores Guide"/>
+  <meta name="twitter:description" content="Step-by-step guide to launching and managing your ReadySetStores online store."/>
+  <meta name="twitter:image" content="/images/logo.png"/>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playpen+Sans+Arabic:wght@100..800&display=swap');
     :root {
@@ -94,6 +104,7 @@
       color: #333; justify-content: center; align-items: center;
       text-align: center; flex: 0 0 100%; padding: 2rem;
       animation: fadeInUp 1s ease-out both;
+      position: relative;
     }
     .step.hero .step-number,
     .step.hero .step-image { display: none; }
@@ -114,6 +125,11 @@
     .down-arrow {
       font-size: 2rem; color: #aaa; margin-top: 2rem;
       animation: float 2s ease-in-out infinite;
+    }
+    @media (min-width: 769px) {
+      .step.hero .down-arrow {
+        transform: rotate(-90deg); /* points to the right on desktop */
+      }
     }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -184,7 +200,7 @@
         <div class="hero-content">
           <h2>Welcome to the ReadySetStores Guide</h2>
           <p>ReadySetStores is a platform that lets anyone create and manage beautiful online shops—no coding needed.</p>
-          <p class="guide-text">Scroll down to begin</p>
+          <p class="guide-text">Scroll to the right to begin</p>
           <div class="down-arrow">↓</div>
         </div>
       </section>
@@ -210,7 +226,7 @@
       </section>
       <section class="step" id="step-3">
         <div class="step-header">
-          <span class="step-number">3</span>
+          <span class="step-number">3</span>  
           <div class="step-content">
             <h2>Step 3: Store Settings - App</h2>
             <p>Personalize your store by adjusting key settings like payments, name, and emails.</p>
@@ -241,10 +257,10 @@
       <section class="step" id="step-6">
         <div class="step-header">
           <span class="step-number">6</span>
-        <div class="step-content">
+          <div class="step-content">
             <h2>Step 6: Dashboard Overview</h2>
             <p>Use your dashboard to seamlessly navigate between your store’s admin panels—manage orders, products, and settings all in one place.</p>
-            </div>
+          </div>
         </div>
         <img src="/images/step6.jpg" alt="Dashboard overview image" class="step-image"/>
       </section>
@@ -252,7 +268,7 @@
         <div class="hero-content">
           <h2>Stage 2: Managing Your Online Store</h2>
           <p>Now that your store is live, let’s explore how to add products, track sales, and grow your business.</p>
-          <p class="guide-text">Scroll down to continue</p>
+          <p class="guide-text">Scroll to the right to continue</p>
           <div class="down-arrow">↓</div>
         </div>
       </section>
@@ -264,7 +280,7 @@
             <p>Create your first products with images, descriptions, pricing, and variations.</p>
           </div>
         </div>
-        <img src="/images/step7.jpg" alt="Add products image" class="step-image"/>
+        <img src="/images/step7.jpg" alt="Step 8 image" class="step-image"/>
       </section>
       <section class="step" id="step-9">
         <div class="step-header">
@@ -274,7 +290,7 @@
             <p>Group your products into collections or categories for easier browsing.</p>
           </div>
         </div>
-        <img src="/images/step8.jpg" alt="Organize categories image" class="step-image"/>
+        <img src="/images/step8.jpg" alt="Step 9 image" class="step-image"/>
       </section>
       <section class="step" id="step-10">
         <div class="step-header">
@@ -284,7 +300,7 @@
             <p>Use the dashboard to view, manage, and fulfill incoming orders.</p>
           </div>
         </div>
-        <img src="/images/step9.jpg" alt="Track orders image" class="step-image"/>
+        <img src="/images/step9.jpg" alt="Step 10 image" class="step-image"/>
       </section>
       <section class="step" id="step-11">
         <div class="step-header">
@@ -294,7 +310,7 @@
             <p>Track store performance, page views, top products, and customer behavior.</p>
           </div>
         </div>
-        <img src="/images/step10.jpg" alt="Store analytics image" class="step-image"/>
+        <img src="/images/step10.jpg" alt="Step 11 image" class="step-image"/>
       </section>
       <section class="step" id="step-12">
         <div class="step-header">
@@ -304,7 +320,7 @@
             <p>Your store’s design is ready—now it’s your turn to bring it to life. Add banners, images, and content that reflect your brand.</p>
           </div>
         </div>
-        <img src="/images/step11.jpg" alt="Fill your store image" class="step-image"/>
+        <img src="/images/step11.jpg" alt="Step 12 image" class="step-image"/>
       </section>
     </div>
     <svg class="bg-arrow arrow1" viewBox="0 0 24 24"><path d="M12 2l-1.41 1.41L16.17 9H2v2h14.17l-5.58 5.59L12 18l8-8z"/></svg>
