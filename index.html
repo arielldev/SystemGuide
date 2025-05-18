@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ReadySetStores Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playpen+Sans+Arabic:wght@100..800&display=swap');
+    :root {
+      --bg-dark: #121212;
+      --bg-dark-alt: #1a1a1a;
+      --fg-light: #e0e0e0;
+      --accent: #00bcd4;
+      --step-bg: #1e1e1e;
+      --radius: 8px;
+      --transition: 0.6s ease-out;
+      --sidebar-width: 4rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Playpen Sans Arabic", cursive;
+      color: var(--fg-light);
+      background: linear-gradient(270deg, var(--bg-dark-alt), var(--bg-dark));
+      background-size: 400% 400%;
+      animation: gradientBG 20s ease infinite;
+    }
+    html, body { width: 100%; }
+    @media (min-width: 769px) {
+      html, body { height: 100vh; overflow: hidden; }
+      main { height: 100vh; overflow: hidden; }
+      .steps-container { height: 100vh; }
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    header {
+      position: fixed; top: 0; left: 0;
+      width: var(--sidebar-width); height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 1rem 0; background: rgba(0,0,0,0.8);
+      z-index: 100;
+    }
+    header .logo {
+      transform: rotate(-90deg); width: 2.5rem; margin-bottom: 1rem;
+    }
+    header h1 {
+      writing-mode: vertical-rl; text-orientation: mixed;
+      white-space: nowrap; font-size: 1.5rem; color: var(--fg-light);
+    }
+    @media (max-width: 768px) {
+      header {
+        position: sticky; width: 100%; height: auto;
+        flex-direction: row; align-items: center;
+        justify-content: flex-start; padding: 0.75rem;
+      }
+      header .logo { transform: rotate(0); margin-right: 0.5rem; }
+      header h1 { writing-mode: horizontal-tb; font-size: 1.25rem; }
+    }
+    main {
+      margin-left: var(--sidebar-width);
+      padding: 2rem 1rem;
+      position: relative;
+    }
+    @media (max-width: 768px) {
+      main { margin-left: 0; padding: 2rem 1rem; }
+    }
+    .steps-container {
+      display: flex; overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding: 1rem; cursor: grab; user-select: none;
+    }
+    .steps-container::-webkit-scrollbar { display: none; }
+    .step {
+      background: var(--step-bg);
+      flex: 0 0 80%; margin-right: 2rem;
+      padding: 1.5rem; border-radius: var(--radius);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+      opacity: 0; transform: translateX(40px);
+      transition: opacity var(--transition), transform var(--transition);
+      scroll-snap-align: start;
+      display: flex; flex-direction: column;
+      min-height: 90vh; margin-top: 1vh;
+    }
+    .step.visible {
+      opacity: 1; transform: translateX(0);
+    }
+    .step.hero {
+      background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
+      color: #333; justify-content: center; align-items: center;
+      text-align: center; flex: 0 0 100%; padding: 2rem;
+      animation: fadeInUp 1s ease-out both;
+    }
+    .step.hero .step-number,
+    .step.hero .step-image { display: none; }
+    .hero-content {
+      opacity: 0; animation: fadeInUp 1s ease-out 0.3s forwards;
+      max-width: 600px; margin: 0 auto;
+    }
+    .hero-content h2 {
+      font-size: 2.5rem; margin-bottom: 1rem; color: #111;
+    }
+    .hero-content p {
+      font-size: 1.125rem; margin-bottom: 0.75rem; color: #555;
+    }
+    .guide-text {
+      margin-top: 1.5rem; font-size: 1rem; color: #777;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .down-arrow {
+      font-size: 2rem; color: #aaa; margin-top: 2rem;
+      animation: float 2s ease-in-out infinite;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; } 50% { opacity: 0.6; }
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .nav-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,0.6); width: 3rem; height: 3rem;
+      border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      animation: pulseBg 2s ease-in-out infinite;
+      transition: transform 0.3s, background 0.3s; z-index: 10;
+    }
+    @keyframes pulseBg {
+      0% { box-shadow: 0 0 0 0 rgba(0,188,212,0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(0,188,212,0); }
+      100% { box-shadow: 0 0 0 0 rgba(0,188,212,0); }
+    }
+    .nav-arrow:hover { background: rgba(5,52,86,0.823); animation-play-state: paused; }
+    .prev { left: calc(var(--sidebar-width) + 1rem); }
+    .next { right: 1rem; }
+    .nav-arrow svg { width: 1.5rem; height: 1.5rem; fill: var(--fg-light); }
+    .bg-arrow {
+      position: absolute; width: 200px; height: 200px; opacity: 0.05;
+      fill: var(--accent); animation: drift 6s ease-in-out infinite;
+    }
+    @keyframes drift {
+      0% { transform: translate(0,0) rotate(0deg); }
+      50% { transform: translate(30px,30px) rotate(45deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
+    }
+    @media(max-width:768px){
+      .steps-container {
+        flex-direction: column; overflow-y: auto;
+        scroll-snap-type: y mandatory;
+        height: calc(100vh - 56px); padding: 0.5rem;
+      }
+      .step {
+        flex: auto; width: 100%; margin-right: 0; margin-bottom: 1.5rem;
+        scroll-snap-align: start; padding: 1rem; min-height: auto;
+      }
+      .step-image { max-height: 50vh; margin-bottom: 0.75rem; }
+      .nav-arrow, .bg-arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="/images/logo.png" alt="ReadySetStores Logo" class="logo"/>
+    <h1>ReadySetStores Guide</h1>
+  </header>
+  <main>
+    <button class="nav-arrow prev" aria-label="Previous">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="nav-arrow next" aria-label="Next">
+      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <div class="steps-container">
+      <section class="step hero" id="step-0">
+        <div class="hero-content">
+          <h2>Welcome to the ReadySetStores Guide</h2>
+          <p>ReadySetStores is a platform that lets anyone create and manage beautiful online shops—no coding needed.</p>
+          <p class="guide-text">Scroll down to begin</p>
+          <div class="down-arrow">↓</div>
+        </div>
+      </section>
+      <section class="step" id="step-1">
+        <div class="step-header">
+          <span class="step-number">1</span>
+          <div class="step-content">
+            <h2>Step 1: Getting Started - App</h2>
+            <p>Open the ReadySetStores app and get ready to launch your first store in minutes.</p>
+          </div>
+        </div>
+        <img src="/images/step1.jpg" alt="Step 1 image" class="step-image"/>
+      </section>
+      <section class="step" id="step-2">
+        <div class="step-header">
+          <span class="step-number">2</span>
+          <div class="step-content">
+            <h2>Step 2: Creating the Store - App</h2>
+            <p>Tap "+" and set up your store settings.</p>
+          </div>
+        </div>
+        <img src="/images/step2.jpg" alt="Step 2 image" class="step-image"/>
+      </section>
+      <section class="step" id="step-3">
+        <div class="step-header">
+          <span class="step-number">3</span>
+          <div class="step-content">
+            <h2>Step 3: Store Settings - App</h2>
+            <p>Personalize your store by adjusting key settings like payments, name, and emails.</p>
+          </div>
+        </div>
+        <img src="/images/step3.jpg" alt="Step 3 image" class="step-image"/>
+      </section>
+      <section class="step" id="step-4">
+        <div class="step-header">
+          <span class="step-number">4</span>
+          <div class="step-content">
+            <h2>Step 4: Customizing the Design - App</h2>
+            <p>Select and customize a design template for your store.</p>
+          </div>
+        </div>
+        <img src="/images/step4.jpg" alt="Step 4 image" class="step-image"/>
+      </section>
+      <section class="step" id="step-5">
+        <div class="step-header">
+          <span class="step-number">5</span>
+          <div class="step-content">
+            <h2>Step 5: Launch Store</h2>
+            <p>Once everything looks right, publish your store and start accepting visitors immediately.</p>
+          </div>
+        </div>
+        <img src="/images/step5.jpg" alt="Step 5 image" class="step-image"/>
+      </section>
+      <section class="step" id="step-6">
+        <div class="step-header">
+          <span class="step-number">6</span>
+        <div class="step-content">
+            <h2>Step 6: Dashboard Overview</h2>
+            <p>Use your dashboard to seamlessly navigate between your store’s admin panels—manage orders, products, and settings all in one place.</p>
+            </div>
+        </div>
+        <img src="/images/step6.jpg" alt="Dashboard overview image" class="step-image"/>
+      </section>
+      <section class="step hero" id="step-7">
+        <div class="hero-content">
+          <h2>Stage 2: Managing Your Online Store</h2>
+          <p>Now that your store is live, let’s explore how to add products, track sales, and grow your business.</p>
+          <p class="guide-text">Scroll down to continue</p>
+          <div class="down-arrow">↓</div>
+        </div>
+      </section>
+      <section class="step" id="step-8">
+        <div class="step-header">
+          <span class="step-number">8</span>
+          <div class="step-content">
+            <h2>Step 8: Add Products</h2>
+            <p>Create your first products with images, descriptions, pricing, and variations.</p>
+          </div>
+        </div>
+        <img src="/images/step7.jpg" alt="Add products image" class="step-image"/>
+      </section>
+      <section class="step" id="step-9">
+        <div class="step-header">
+          <span class="step-number">9</span>
+          <div class="step-content">
+            <h2>Step 9: Organize Categories</h2>
+            <p>Group your products into collections or categories for easier browsing.</p>
+          </div>
+        </div>
+        <img src="/images/step8.jpg" alt="Organize categories image" class="step-image"/>
+      </section>
+      <section class="step" id="step-10">
+        <div class="step-header">
+          <span class="step-number">10</span>
+          <div class="step-content">
+            <h2>Step 10: Track Orders</h2>
+            <p>Use the dashboard to view, manage, and fulfill incoming orders.</p>
+          </div>
+        </div>
+        <img src="/images/step9.jpg" alt="Track orders image" class="step-image"/>
+      </section>
+      <section class="step" id="step-11">
+        <div class="step-header">
+          <span class="step-number">11</span>
+          <div class="step-content">
+            <h2>Step 11: Store Analytics</h2>
+            <p>Track store performance, page views, top products, and customer behavior.</p>
+          </div>
+        </div>
+        <img src="/images/step10.jpg" alt="Store analytics image" class="step-image"/>
+      </section>
+      <section class="step" id="step-12">
+        <div class="step-header">
+          <span class="step-number">12</span>
+          <div class="step-content">
+            <h2>Step 12: Fill Your Store</h2>
+            <p>Your store’s design is ready—now it’s your turn to bring it to life. Add banners, images, and content that reflect your brand.</p>
+          </div>
+        </div>
+        <img src="/images/step11.jpg" alt="Fill your store image" class="step-image"/>
+      </section>
+    </div>
+    <svg class="bg-arrow arrow1" viewBox="0 0 24 24"><path d="M12 2l-1.41 1.41L16.17 9H2v2h14.17l-5.58 5.59L12 18l8-8z"/></svg>
+    <svg class="bg-arrow arrow2" viewBox="0 0 24 24"><path d="M12 22l1.41-1.41L7.83 15H22v-2H7.83l5.58-5.59L12 2l-8 8z"/></svg>
+  </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.querySelector(".steps-container");
+      const steps = Array.from(document.querySelectorAll(".step"));
+      const style = getComputedStyle(steps[0]);
+      const stepWidth = steps[0].offsetWidth + parseInt(style.marginRight, 10);
+      let lastScroll = 0;
+
+      container.addEventListener("wheel", e => {
+        if (window.innerWidth <= 768) return;
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScroll < 600) return;
+        lastScroll = now;
+        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        const dir = delta > 0 ? 1 : -1;
+        container.scrollBy({ left: dir * stepWidth, behavior: "smooth" });
+      }, { passive: false });
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      steps.forEach(step => observer.observe(step));
+
+      let isDown = false, startX = 0, scrollLeft = 0;
+      container.addEventListener("mousedown", e => {
+        isDown = true;
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+      });
+      ["mouseup", "mouseleave"].forEach(evt =>
+        container.addEventListener(evt, () => isDown = false)
+      );
+      container.addEventListener("mousemove", e => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        container.scrollLeft = scrollLeft - (x - startX);
+      });
+
+      document.querySelector(".prev").addEventListener("click", () =>
+        container.scrollBy({ left: -stepWidth, behavior: "smooth" })
+      );
+      document.querySelector(".next").addEventListener("click", () =>
+        container.scrollBy({ left: stepWidth, behavior: "smooth" })
+      );
+    });
+  </script>
+</body>
+</html>
