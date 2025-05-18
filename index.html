@@ -20,13 +20,16 @@
       --bg-dark: #121212;
       --bg-dark-alt: #1a1a1a;
       --fg-light: #e0e0e0;
-      --accent: #00bcd4;
       --step-bg: #1e1e1e;
       --radius: 8px;
       --transition: 0.6s ease-out;
       --sidebar-width: 4rem;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+    }
     body {
       font-family: "Playpen Sans Arabic", cursive;
       color: var(--fg-light);
@@ -34,7 +37,6 @@
       background-size: 400% 400%;
       animation: gradientBG 20s ease infinite;
     }
-    html, body { width: 100%; }
     @media (min-width: 769px) {
       html, body { height: 100vh; overflow: hidden; }
       main { height: 100vh; overflow: hidden; }
@@ -84,7 +86,22 @@
       -webkit-overflow-scrolling: touch;
       padding: 1rem; cursor: grab; user-select: none;
     }
-    .steps-container::-webkit-scrollbar { display: none; }
+    .steps-container::-webkit-scrollbar {
+      width: 8px; height: 8px;
+    }
+    .steps-container::-webkit-scrollbar-track {
+      background: #1a1a1a; border-radius: 8px;
+    }
+    .steps-container::-webkit-scrollbar-thumb {
+      background: #555; border-radius: 8px;
+    }
+    .steps-container::-webkit-scrollbar-thumb:hover {
+      background: #777;
+    }
+    .steps-container {
+      scrollbar-width: thin;
+      scrollbar-color: #555 #1a1a1a;
+    }
     .step {
       background: var(--step-bg);
       flex: 0 0 80%; margin-right: 2rem;
@@ -95,10 +112,9 @@
       scroll-snap-align: start;
       display: flex; flex-direction: column;
       min-height: 90vh; margin-top: 1vh;
+      max-height: 100vh; overflow-y: auto;
     }
-    .step.visible {
-      opacity: 1; transform: translateX(0);
-    }
+    .step.visible { opacity: 1; transform: translateX(0); }
     .step.hero {
       background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
       color: #333; justify-content: center; align-items: center;
@@ -112,12 +128,8 @@
       opacity: 0; animation: fadeInUp 1s ease-out 0.3s forwards;
       max-width: 600px; margin: 0 auto;
     }
-    .hero-content h2 {
-      font-size: 2.5rem; margin-bottom: 1rem; color: #111;
-    }
-    .hero-content p {
-      font-size: 1.125rem; margin-bottom: 0.75rem; color: #555;
-    }
+    .hero-content h2 { font-size: 2.5rem; margin-bottom: 1rem; color: #111; }
+    .hero-content p { font-size: 1.125rem; margin-bottom: 0.75rem; color: #555; }
     .guide-text {
       margin-top: 1.5rem; font-size: 1rem; color: #777;
       animation: pulse 2s ease-in-out infinite;
@@ -127,13 +139,11 @@
       animation: float 2s ease-in-out infinite;
     }
     @media (min-width: 769px) {
-      .step.hero .down-arrow {
-        transform: rotate(-90deg); /* points to the right on desktop */
-      }
+      .step.hero .down-arrow { transform: rotate(-90deg); }
     }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes pulse {
       0%,100% { opacity: 1; } 50% { opacity: 0.6; }
@@ -151,8 +161,8 @@
       transition: transform 0.3s, background 0.3s; z-index: 10;
     }
     @keyframes pulseBg {
-      0% { box-shadow: 0 0 0 0 rgba(0,188,212,0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(0,188,212,0); }
+      0%   { box-shadow: 0 0 0 0 rgba(0,188,212,0.7); }
+      70%  { box-shadow: 0 0 0 10px rgba(0,188,212,0); }
       100% { box-shadow: 0 0 0 0 rgba(0,188,212,0); }
     }
     .nav-arrow:hover { background: rgba(5,52,86,0.823); animation-play-state: paused; }
@@ -164,19 +174,31 @@
       fill: var(--accent); animation: drift 6s ease-in-out infinite;
     }
     @keyframes drift {
-      0% { transform: translate(0,0) rotate(0deg); }
-      50% { transform: translate(30px,30px) rotate(45deg); }
+      0%   { transform: translate(0,0) rotate(0deg); }
+      50%  { transform: translate(30px,30px) rotate(45deg); }
       100% { transform: translate(0,0) rotate(0deg); }
     }
-    @media(max-width:768px){
+    .product-images {
+      display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;
+    }
+    .product-images img {
+      flex: 1 1 calc(50% - 1rem); max-width: 100%; height: auto; border-radius: 8px;
+    }
+    .customize-images {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem;
+    }
+    .customize-images img {
+      width: 100%; height: auto; border-radius: 8px;
+    }
+    @media (max-width: 768px) {
       .steps-container {
-        flex-direction: column; overflow-y: auto;
+        flex-direction: column; overflow-y: auto; overflow-x: hidden;
         scroll-snap-type: y mandatory;
         height: calc(100vh - 56px); padding: 0.5rem;
       }
       .step {
-        flex: auto; width: 100%; margin-right: 0; margin-bottom: 1.5rem;
-        scroll-snap-align: start; padding: 1rem; min-height: auto;
+        flex: 0 0 auto; width: 100%; margin-right: 0; margin-bottom: 1.5rem;
+        scroll-snap-align: start; padding: 1rem; min-height: auto; max-height: none;
       }
       .step-image { max-height: 50vh; margin-bottom: 0.75rem; }
       .nav-arrow, .bg-arrow { display: none; }
@@ -205,8 +227,7 @@
         </div>
       </section>
       <section class="step" id="step-1">
-        <div class="step-header">
-          <span class="step-number">1</span>
+        <div class="step-header"><span class="step-number">1</span>
           <div class="step-content">
             <h2>Step 1: Getting Started - App</h2>
             <p>Open the ReadySetStores app and get ready to launch your first store in minutes.</p>
@@ -215,8 +236,7 @@
         <img src="/images/step1.jpg" alt="Step 1 image" class="step-image"/>
       </section>
       <section class="step" id="step-2">
-        <div class="step-header">
-          <span class="step-number">2</span>
+        <div class="step-header"><span class="step-number">2</span>
           <div class="step-content">
             <h2>Step 2: Creating the Store - App</h2>
             <p>Tap "+" and set up your store settings.</p>
@@ -225,8 +245,7 @@
         <img src="/images/step2.jpg" alt="Step 2 image" class="step-image"/>
       </section>
       <section class="step" id="step-3">
-        <div class="step-header">
-          <span class="step-number">3</span>  
+        <div class="step-header"><span class="step-number">3</span>
           <div class="step-content">
             <h2>Step 3: Store Settings - App</h2>
             <p>Personalize your store by adjusting key settings like payments, name, and emails.</p>
@@ -235,8 +254,7 @@
         <img src="/images/step3.jpg" alt="Step 3 image" class="step-image"/>
       </section>
       <section class="step" id="step-4">
-        <div class="step-header">
-          <span class="step-number">4</span>
+        <div class="step-header"><span class="step-number">4</span>
           <div class="step-content">
             <h2>Step 4: Customizing the Design - App</h2>
             <p>Select and customize a design template for your store.</p>
@@ -245,8 +263,7 @@
         <img src="/images/step4.jpg" alt="Step 4 image" class="step-image"/>
       </section>
       <section class="step" id="step-5">
-        <div class="step-header">
-          <span class="step-number">5</span>
+        <div class="step-header"><span class="step-number">5</span>
           <div class="step-content">
             <h2>Step 5: Launch Store</h2>
             <p>Once everything looks right, publish your store and start accepting visitors immediately.</p>
@@ -255,8 +272,7 @@
         <img src="/images/step5.jpg" alt="Step 5 image" class="step-image"/>
       </section>
       <section class="step" id="step-6">
-        <div class="step-header">
-          <span class="step-number">6</span>
+        <div class="step-header"><span class="step-number">6</span>
           <div class="step-content">
             <h2>Step 6: Dashboard Overview</h2>
             <p>Use your dashboard to seamlessly navigate between your store’s admin panels—manage orders, products, and settings all in one place.</p>
@@ -273,54 +289,57 @@
         </div>
       </section>
       <section class="step" id="step-8">
-        <div class="step-header">
-          <span class="step-number">8</span>
+        <div class="step-header"><span class="step-number">8</span>
           <div class="step-content">
-            <h2>Step 8: Add Products</h2>
-            <p>Create your first products with images, descriptions, pricing, and variations.</p>
+            <h2>Step 8: Store Analytics</h2>
+            <p>Track store performance, page views, top products, and customer behavior from your analytics dashboard.</p>
           </div>
         </div>
-        <img src="/images/step7.jpg" alt="Step 8 image" class="step-image"/>
+        <img src="/images/storeanaly.png" alt="Store analytics image" class="step-image"/>
       </section>
       <section class="step" id="step-9">
-        <div class="step-header">
-          <span class="step-number">9</span>
+        <div class="step-header"><span class="step-number">9</span>
           <div class="step-content">
-            <h2>Step 9: Organize Categories</h2>
+            <h2>Step 9: Add Products</h2>
+            <p>Create your first products with images, descriptions, pricing, and variations.</p>
+            <div class="product-images">
+              <img src="/images/storeprod.png" alt="Product image 1"/>
+              <img src="/images/storeprodpage.png" alt="Product image 2"/>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="step" id="step-10">
+        <div class="step-header"><span class="step-number">10</span>
+          <div class="step-content">
+            <h2>Step 10: Organize Categories</h2>
             <p>Group your products into collections or categories for easier browsing.</p>
           </div>
         </div>
-        <img src="/images/step8.jpg" alt="Step 9 image" class="step-image"/>
+        <img src="/images/storecreatecatagory.png" alt="Organize categories image" class="step-image"/>
       </section>
-      <section class="step" id="step-10">
-        <div class="step-header">
-          <span class="step-number">10</span>
+      <section class="step" id="step-11">
+        <div class="step-header"><span class="step-number">11</span>
           <div class="step-content">
-            <h2>Step 10: Track Orders</h2>
+            <h2>Step 11: Track Orders</h2>
             <p>Use the dashboard to view, manage, and fulfill incoming orders.</p>
           </div>
         </div>
-        <img src="/images/step9.jpg" alt="Step 10 image" class="step-image"/>
-      </section>
-      <section class="step" id="step-11">
-        <div class="step-header">
-          <span class="step-number">11</span>
-          <div class="step-content">
-            <h2>Step 11: Store Analytics</h2>
-            <p>Track store performance, page views, top products, and customer behavior.</p>
-          </div>
-        </div>
-        <img src="/images/step10.jpg" alt="Step 11 image" class="step-image"/>
+        <img src="/images/orders.png" alt="Track orders image" class="step-image"/>
       </section>
       <section class="step" id="step-12">
-        <div class="step-header">
-          <span class="step-number">12</span>
+        <div class="step-header"><span class="step-number">12</span>
           <div class="step-content">
             <h2>Step 12: Fill Your Store</h2>
             <p>Your store’s design is ready—now it’s your turn to bring it to life. Add banners, images, and content that reflect your brand.</p>
+            <div class="customize-images">
+              <img src="/images/play1.png" alt="Customize image 1"/>
+              <img src="/images/play2.png" alt="Customize image 2"/>
+              <img src="/images/play3.png" alt="Customize image 3"/>
+              <img src="/images/play4.png" alt="Customize image 4"/>
+            </div>
           </div>
         </div>
-        <img src="/images/step11.jpg" alt="Step 12 image" class="step-image"/>
       </section>
     </div>
     <svg class="bg-arrow arrow1" viewBox="0 0 24 24"><path d="M12 2l-1.41 1.41L16.17 9H2v2h14.17l-5.58 5.59L12 18l8-8z"/></svg>
@@ -333,7 +352,6 @@
       const style = getComputedStyle(steps[0]);
       const stepWidth = steps[0].offsetWidth + parseInt(style.marginRight, 10);
       let lastScroll = 0;
-
       container.addEventListener("wheel", e => {
         if (window.innerWidth <= 768) return;
         e.preventDefault();
@@ -344,7 +362,6 @@
         const dir = delta > 0 ? 1 : -1;
         container.scrollBy({ left: dir * stepWidth, behavior: "smooth" });
       }, { passive: false });
-
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -353,9 +370,7 @@
           }
         });
       }, { threshold: 0.1 });
-
       steps.forEach(step => observer.observe(step));
-
       let isDown = false, startX = 0, scrollLeft = 0;
       container.addEventListener("mousedown", e => {
         isDown = true;
@@ -371,7 +386,6 @@
         const x = e.pageX - container.offsetLeft;
         container.scrollLeft = scrollLeft - (x - startX);
       });
-
       document.querySelector(".prev").addEventListener("click", () =>
         container.scrollBy({ left: -stepWidth, behavior: "smooth" })
       );
